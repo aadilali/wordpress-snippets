@@ -1,0 +1,7 @@
+<?php
+
+  // Function to remove roles from wordpress
+  remove_role( $role ); //$role is slug name of role that you want to delete
+
+?> 
+
