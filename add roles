@@ -1,0 +1,12 @@
+ <?php
+ // Add role into the wp database, use in function.php
+ add_role(
+    'role name(slug)',
+    __( 'Display Name' ),
+  array(
+        'read'         => false,  // true allows this capability
+        'edit_posts'   => false,
+        'delete_posts' => false, // Use false to explicitly deny
+    )
+);
+?>
