@@ -1,0 +1,22 @@
+<?php
+
+// Write in function.php
+
+function your_function_name(parameter if any)
+{
+  //Your desired functionality, all code write here
+}
+
+
+// Register the Shortcode
+function register_shortcodes(){
+
+//Short code name is like (recent-post),
+// Function name, the function your are calling against provided short code
+
+   add_shortcode('Short code name', 'your_function_name');
+}
+
+// Initialize the short code
+
+add_action( 'init', 'register_shortcodes');
