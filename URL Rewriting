@@ -1,0 +1,20 @@
+/* URL REWRITING */
+function prefix_toy_rewrite_rule() {
+	
+    add_rewrite_rule( 'dealers/([^/]+)', 'index.php?page_id=294&mems=$matches[1]', 'top' );
+	add_rewrite_rule( 'customers/([^/]+)', 'index.php?page_id=290&mems=$matches[1]', 'top' );
+	add_rewrite_rule( 'toys-communication/([^/]+)', 'index.php?page_id=455&toy_id=$matches[1]', 'top' );
+	
+	add_rewrite_rule( 'dealer-toys-list/([^/]+)', 'index.php?page_id=581&userID=$matches[1]', 'top' );
+	
+		
+}
+add_action( 'init', 'prefix_toy_rewrite_rule' );
+
+function prefix_register_query_var( $vars ) {
+	$vars[] = 'mems';
+	$vars[] = 'toy_id';
+	$vars[] = 'userID';
+    return $vars;
+}
+add_filter( 'query_vars', 'prefix_register_query_var' );
