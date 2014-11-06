@@ -1,0 +1,34 @@
+add_filter('admin_init', 'my_general_settings_register_fields');
+
+function my_general_settings_register_fields() 
+{
+	register_setting('general', 'yearly_expense', 'esc_attr');
+	
+	// Yearly Expenses
+	add_settings_field('yearly_expense', '<label for="yearly_expense">'.__('Yearly Expenses' , 'yearly_expense' ).'</label>', 'yearly_expense_settings_fields_html', 'general');
+	
+	// Sales Tax
+	add_settings_field('salestax_field', '<label for="salestax_field">'.__('Sales Tax' , 'salestax_field' ).'</label>', 'salestax_field_settings_fields_html', 'general');
+	
+	// Management Fees
+	add_settings_field('mng_fee', '<label for="mng_fee">'.__('Management Fee' , 'mng_fee' ).'</label>', 'mng_fee_settings_fields_html', 'general');
+	
+}
+
+function yearly_expense_settings_fields_html()
+{
+	$value = get_option( 'yearly_expense', '' );
+	echo '<input type="text" id="yearly_expense" name="yearly_expense" value="' . $value . '" />';
+}
+
+function salestax_field_settings_fields_html()
+{
+	$value = get_option( 'salestax_field', '' );
+	echo '<input type="text" id="salestax_field" name="salestax_field" value="' . $value . '" />';
+}
+
+function mng_fee_settings_fields_html()
+{
+	$value = get_option( 'mng_fee', '' );
+	echo '<input type="text" id="mng_fee" name="mng_fee" value="' . $value . '" />';
+}
