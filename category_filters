@@ -1,0 +1,64 @@
+ /**
+ Add in constructor
+ 
+ // Add Ajax for filtering the content
+            add_action( 'wp_ajax_get_cat_videos', array($this, 'get_cat_videos') );
+            add_action( 'wp_ajax_nopriv_get_cat_videos', array($this, 'get_cat_videos') );
+ **/
+ 
+ /**
+    * Get the Videos through Ajax for filtering by category 
+    * @return Array return array containing videos related to selected category
+    */
+    public function get_cat_videos(){
+         
+         $cat_slug = $_POST['cat_slug'];
+         $cli_output = '';
+         $args = array(
+                    'post_type' => 'mpvg_videos_cpt',
+                    'posts_per_page' => 10,
+                );
+
+        $cat_query = array(
+                                'taxonomy' => 'mpvg_videos_ct',
+                                'field'    => 'slug',
+                                'terms'    => $cat_slug,
+                        );
+        $args['tax_query'] = array( $cat_query );
+        
+        $mpvg_vid_query = new WP_Query( $args );
+
+        if ( $mpvg_vid_query->have_posts() ) {
+            // Start the loop.
+            while ( $mpvg_vid_query->have_posts() ) : $mpvg_vid_query->the_post();
+                        
+                $video_link = get_post_meta(get_the_ID(), 'video_file_link', true);
+                $video_array = $this->get_video_source_from_url($video_link);
+                if($video_array[1]=='youtube'){
+                    $thumb_pic='http://img.youtube.com/vi/'.$video_array[0].'/mqdefault.jpg';
+                    $cli_output .= '<div class="video_gallery_row"><a class="fancybox.iframe video_gallery fancybox-iframe"  href="https://www.youtube.com/embed/'.$video_array[0].'"><img src="'.$thumb_pic.'" alt="" /><div class="video_title">'.get_the_title().'</div></a></div>';
+                }
+                else if($video_array[1]=='vimeo'){
+                    $hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$video_array[0].".php"));
+                    $thumb_pic=$hash[0]['thumbnail_large'];
+                    $cli_output .= '<div class="video_gallery_row"><a class="fancybox.iframe video_gallery fancybox-iframe"  href="http://player.vimeo.com/video/'.$video_array[0].'"><img src="'.$thumb_pic.'" alt="" /><div class="video_title">'.get_the_title().'</div></a></div>';
+                }
+                else{
+                    if( has_post_thumbnail( get_the_ID() )){
+                        $cli_output .= '<div class="video_gallery_row"><a class="fancybox.iframe video_gallery fancybox-iframe"  href="'.$video_array[0].'">'.get_the_post_thumbnail( get_the_ID(),  array( 320, 180) ).'<div class="video_title">'.get_the_title().'</div></a></div>';
+                    }
+                    else{
+                         $video_thumb = plugin_dir_url(__FILE__).'images/default-thumbnail.jpg';
+                         $cli_output .= '<div class="video_gallery_row"><a class="fancybox.iframe video_gallery fancybox-iframe"  href="'.$video_array[0].'"><img src="'.$video_thumb.'" alt="" width="320" height="180" /><div class="video_title">'.get_the_title().'</div></a></div>';
+                    }
+                }
+            endwhile;
+            // clean up after our query
+            wp_reset_query(); 
+        }
+        else{
+            $cli_output .= '<div class="table_row">No Video Found!</div></div>';
+        }
+
+        echo $cli_output .= '</div>';
+    } 
