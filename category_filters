@@ -61,4 +61,5 @@
         }
 
         echo $cli_output .= '</div>';
+        wp_die();
     } 
