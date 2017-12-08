@@ -43,3 +43,31 @@ foreach ($cdir as $key => $value)
       }  
    } 
 } 
+
+/*
+$post_args = array( // Set up the basic post data to insert for our product
+        'post_author'  => $product_data->post_author,
+        'post_content' => $course_post->post_content,
+        'post_status'  => 'publish',
+        'post_title'   => $product_data->post_title,
+        'post_type'    => 'product'
+    );
+
+	remove_action( 'save_post', 'ci_create_product_function', 100, 3 );
+
+   $post_id = wp_insert_post($post_args); // Insert the post returning the new post id
+
+    if (!$post_id) // If there is no post id something has gone wrong so don't proceed
+    {
+        return false;
+    }
+
+	$course_price = get_post_meta($course_post->ID, 'ci_course_price', true);
+
+    update_post_meta($post_id, '_sku', $product_data->ID); // Set its SKU
+    update_post_meta( $post_id,'_visibility','visible'); // Set the product to visible, if not it won't show on the front end
+    update_post_meta( $post_id,'_regular_price',$course_price);
+	update_post_meta( $post_id,'_price',$course_price); 
+	update_post_meta( $post_id,'_virtual','yes');
+	update_post_meta( $post_id,'_sold_individually','yes');
+   */
