@@ -1,0 +1,99 @@
+<?php
+/*
+Plugin Name: Test plugin
+Description: A test plugin to demonstrate wordpress functionality
+Author: Simon Lissack
+Version: 0.1
+*/
+add_action('admin_menu', 'test_plugin_setup_menu');
+ 
+function test_plugin_setup_menu(){
+        add_menu_page( 'Test Plugin Page', 'Test Plugin', 'manage_options', 'test-plugin', 'test_init' );
+}
+ 
+function test_init(){
+        test_handle_post();
+?>
+        <h1>Hello World!</h1>
+        <h2>Upload a File</h2>
+        <!-- Form to handle the upload - The enctype value here is very important -->
+        <div id="image_holder">
+            <div id="PreviewPicture"></div>
+            <div id="banner_image_btn" onclick="changeImage('banner');">Change Image</div>
+        </div>
+        <form  method="post" enctype="multipart/form-data">
+            <input id="test_upload_pdf" type="file" name="test_upload_pdf" class="image" onchange="ImagePreview()" />
+            <?php submit_button('Upload') ?>
+        </form>
+        <style type="text/css">
+            #PreviewPicture {
+                width: 180px;
+                height: 180px;
+                background-position: center center;
+                background-size: cover;
+                -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+                display: inline-block;
+            }
+            #image_holder {
+                position: relative;
+            }
+            #banner_image_btn {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                padding: 10px 20px;
+                background: rgba(0,0,0,0.5);
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            #banner_image_btn:hover {
+                background: rgba(0,0,0,0.9);
+            }
+        </style>
+        <script type="text/javascript">
+            function changeImage(imageType) {
+
+                alert(imageType);
+                switch(imageType) {
+                    case 'banner':
+                        document.getElementById('test_upload_pdf').click();
+                    break;
+                }
+            }
+
+            function ImagePreview() { 
+                var PreviewIMG = document.getElementById('PreviewPicture'); 
+                var UploadFile    =  document.getElementById('test_upload_pdf').files[0]; 
+                var ReaderObj  =  new FileReader(); 
+                ReaderObj.onloadend = function () { 
+                    PreviewIMG.style.backgroundImage  = "url("+ ReaderObj.result+")";
+                } 
+                if (UploadFile) { 
+                    ReaderObj.readAsDataURL(UploadFile);
+                } else { 
+                    PreviewIMG.style.backgroundImage  = "";
+                } 
+            }
+        </script>
+<?php
+}
+ 
+function test_handle_post(){
+        // First check if the file appears on the _FILES array
+        if(isset($_FILES['test_upload_pdf'])){
+                $pdf = $_FILES['test_upload_pdf'];
+ 
+                // Use the wordpress function to upload
+                // test_upload_pdf corresponds to the position in the $_FILES array
+                // 0 means the content is not associated with any other posts
+                $uploaded=wp_handle_upload($pdf, array( 'test_form' => false ));
+                // Error checking using WP functions
+                if(is_wp_error($uploaded)){
+                        echo "Error uploading file: " . $uploaded->get_error_message();
+                }else{
+                        echo "File upload successful!";
+                        print_r($uploaded);
+                }
+        }
+}
+ 
