@@ -1,4 +1,29 @@
 <?php
+
+/*  EMAIL
+
+            $attachments = array(WP_CONTENT_DIR . '/uploads/file_to_attach.zip');
+            $headers = 'From: My Name <myname@mydomain.com>' . "\r\n";
+            wp_mail('test@test.com', 'subject', 'message', $headers, $attachments);
+
+            The attachment has to a file path, not an url. The following worked for me:
+
+            $to = $_POST['to'];
+            $from = $_POST['from']; 
+            $name = get_bloginfo('name');
+
+            $headers = 'From: My Name <myname@mydomain.com>' . "\r\n";
+
+            $subject = 'Send to Kindle';
+
+            $msg = 'Yay! Your book has <a href="http://yahoo.com">arrived</a>';
+
+            $mail_attachment = array(WP_CONTENT_DIR . '/uploads/2012/03/image.png');   
+
+            wp_mail($to, $subject, $msg, $headers, $mail_attachment);
+
+            */
+            
             $html_str = '<h1>Image alignments on HTML table</h1>
             <table cellpadding="0" cellspacing="0" border="0" style="text-align:left;">
             <tr>
