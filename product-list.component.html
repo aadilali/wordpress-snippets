@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="row" *ngIf="productItems">
+          <div class="col-sm-4" *ngFor="let product of productItems; let i of index;">
+            <div style="padding:30px; background: #ccc;">
+              <div class="title">{{ product.title }}</div>
+              <div class="description">{{ product.desc }}</div>
+              <div class="price">{{ product.price }}</div>
+              <div class="btn btn-info" (click)="addToCart(product);">ADD +</div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Cart</div>
+        <div class="panel-body" *ngIf="cart_Items">
+          <div><label>Date: </label>{{ cart_Items.book_date }}</div>
+          <div><label>Participants: </label>{{ cart_Items.participants }}</div>
+          <div><label>Note: </label>{{ cart_Items.book_notes }}</div>
+          <div>
+            <label>Items</label>
+            <div class="" *ngFor="let item of cart_Items.paramList;">
+              <div>Price: {{ item.price }} ----- Qty: {{ item.qty }}</div>
+            </div>
+          </div>
+          <div>Sub Total: {{ subTotal }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="alert alert-danger" *ngIf="!productItems">No Product Found</div>
+</div>
